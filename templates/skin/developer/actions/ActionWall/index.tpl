@@ -25,7 +25,7 @@
             return false;
         }
         $('#wall-button-next').addClass('loader');
-        var params = {'ipage': ipage};
+        var params = { 'ipage': ipage};
         var url = aRouter['wall'] + 'ajax/load/';
         ls.ajax(url, params, function (result) {
             if (result.bStateError) {
