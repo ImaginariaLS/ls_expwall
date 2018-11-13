@@ -16,11 +16,23 @@
 
 class PluginExpwall_HookExpwall extends Hook
 {
+    const ConfigKey = 'expwall';
+    const HooksArray = [
+        'template_main_menu_item'       =>  'MenuMain',
+        'template_profile_whois_end'    =>  'ProfileWhois'
+    ];
 
     public function RegisterHook()
     {
-        $this->AddHook('template_main_menu_item', 'MenuMain', __CLASS__);
-        $this->AddHook('template_profile_whois_end', 'ProfileWhois', __CLASS__);
+        $plugin_config_key = $this::ConfigKey;
+        foreach ($this::HooksArray as $hook => $callback) {
+            $this->AddHook(
+                $hook,
+                $callback,
+                __CLASS__,
+                Config::Get("plugin.{$plugin_config_key}.hook_priority.{$hook}") ?? 1
+            );
+        }
     }
 
     public function ProfileWhois($aVars)
