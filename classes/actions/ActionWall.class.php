@@ -158,10 +158,15 @@ class PluginExpwall_ActionWall extends ActionPlugin
         );
         $aWall = $this->Wall_GetWall($aFilter, array('id' => 'asc'), 1, 300);
         $this->Viewer_Assign('aReplyWall', $aWall['collection']);
+
+        /**
+         * Внимание, вопрос, почему здесь грузится шаблон из \templates\skin\synio\actions\ActionProfile\wall_items_reply.tpl
+         * А не из <plugin>\templates\skin\default\wall_items_reply.tpl ???
+         */
+
         $this->Viewer_AssignAjax('sText', $this->Viewer_Fetch('actions/ActionProfile/wall_items_reply.tpl'));
         $this->Viewer_AssignAjax('iCountWall', $aWall['count']);
         $this->Viewer_AssignAjax('iCountWallReturn', count($aWall['collection']));
-
     }
 
     protected function EventIndex()
