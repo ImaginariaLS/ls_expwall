@@ -51,6 +51,7 @@ class PluginExpwall_ActionWall extends ActionPlugin
         if (!$oUser = $this->User_GetUserById($iUserId)) {
             return parent::EventNotFound();
         }
+        
         /**
          * Создаем запись
          */
@@ -73,12 +74,29 @@ class PluginExpwall_ActionWall extends ActionPlugin
                 /**
                  * Отправляем уведомления
                  */
+                
+                if ($oWallParent = $oWall->GetPidWall() and $oWallParent->getUserId() != $oWall->getUserId()) {
+
+                    // Ответ на ваше сообщение на стене
+                    $this->Notify_SendWallReply($oWallParent, $oWall, $this->oUserCurrent);
+                    
+                } elseif ($oWall->getWallUserId() != $oWall->getUserId()) {
+
+                    // Новое сообщение на вашей стене
+                    $this->Notify_SendWallNew($oWall, $this->oUserCurrent);
+                }
+                
+                // Новое сообщение на вашей стене
+/*
                 if ($oWall->getWallUserId() != $oWall->getUserId()) {
                     $this->Notify_SendWallNew($oWall, $this->oUserCurrent);
                 }
+                
+                // Ответ на ваше сообщение на стене
                 if ($oWallParent = $oWall->GetPidWall() and $oWallParent->getUserId() != $oWall->getUserId()) {
                     $this->Notify_SendWallReply($oWallParent, $oWall, $this->oUserCurrent);
                 }
+*/
                 /**
                  * Добавляем событие в ленту
                  */
